@@ -1,0 +1,6 @@
+---
+- hosts: openstack
+  remote_user: root
+
+  roles:
+     - role: first

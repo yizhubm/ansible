@@ -1,0 +1,25 @@
+---
+
+- name: 替换selinux配置文件
+  copy: src=serlinux_disable.config dest=/etc/selinux/config
+
+- name: 关闭firewall
+  service: name=firewalld state=stopped
+
+- name: 禁止firewall启动
+  service: name=firewalld enabled=no
+
+- name: 安装iptables
+  yum: name="iptables-services" state=present
+
+- name: 替换iptables配置文件
+  copy: src=iptables.conf dest=/etc/sysconfig/iptables
+
+- name: 启动iptables
+  service: name=iptables state=started
+
+- name: 开机启动iptables
+  service: name=iptables enabled=yes
+
+- name: 重启
+  command: /sbin/shutdown -r -t 10
